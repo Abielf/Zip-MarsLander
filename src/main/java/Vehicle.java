@@ -1,9 +1,4 @@
 public class Vehicle {
-
-    public Vehicle(int InitialAltitude) {
-        // initialize the altitude AND previous altitude to initialAltitude
-    }
-
     int Gravity = 100;
     /* The rate in which the spaceship descents in free fall (in ten seconds) */
 
@@ -27,8 +22,19 @@ public class Vehicle {
     int Burn = 0;
     int Flying = FLYING;
 
-    public Vehicle() {}
 
+    //constructor for vehicle, just makes a vehicle object with all the initial values.
+    public Vehicle() { }
+
+    public Vehicle(int InitialAltitude) {
+        // initialize the altitude AND previous altitude to initialAltitude
+        Altitude=InitialAltitude;
+        PrevAltitude=InitialAltitude;
+    }
+
+
+
+    //checks end status of vehicle based on it's velocity, or if out of fuel.
     public String checkFinalStatus() {
         String s = "";
         if (this.Altitude <= 0) {
@@ -52,32 +58,42 @@ public class Vehicle {
         return s;
     }
 
+    //computes the change in delta
     public int computeDeltaV() {
         // return velocity + gravity - burn amount
-        return 0;
+        return Velocity+Gravity-Burn;
     }
 
     public void adjustForBurn(int burnAmount) {
         // set burn to burnamount requested
+        Burn=burnAmount;
         // save previousAltitude with current Altitude
+        PrevAltitude=Altitude;
         // set new velocity to result of computeDeltaV function.
+        Velocity=computeDeltaV();
         // subtract speed from Altitude
+        Altitude-=Velocity;
         // subtract burn amount fuel used from tank
+        Fuel-=burnAmount;
     }
 
     public boolean stillFlying() {
         // return true if altitude is positive
-        return false;
+        if(Altitude>0){return true;
+        }else return false;
     }
     public boolean outOfFuel() {
         // return true if fuel is less than or equal to zero
-        return true;
+        if(Fuel<=0){
+            return true;
+        } else return false;
     }
 
     public DescentEvent getStatus(int tick) {
         // create a return a new DescentEvent object
+        DescentEvent horizon=new DescentEvent(tick,Velocity,Fuel,Altitude,0);
         // filled in with the state of the vehicle.
-        return null;
+        return horizon;
     }
 
 }
