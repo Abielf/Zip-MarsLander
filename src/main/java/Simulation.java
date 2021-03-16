@@ -74,6 +74,30 @@ public class Simulation {
         return -1;
     }
 
+    public int runSimulation(OnBoardComputer burnSource) {
+        DescentEvent status = null;
+        int burnInterval = 0;
+        printString(gameHeader());
+        printString(getHeader());
+        while (vehicle.stillFlying()) {
+            status = vehicle.getStatus(burnInterval);
+            System.out.print(status.toString()+"\t\t");
+            vehicle.adjustForBurn(burnSource.getNextBurn(status));
+            if (vehicle.outOfFuel()) {
+                break;
+            }
+            burnInterval++;
+            if (burnInterval % 9 == 0) {
+                printString(getHeader());
+            }
+        }
+        printString(vehicle.checkFinalStatus());
+        if (status != null) {
+            return status.getStatus();
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         // create a new Simulation object with a random starting altitude
         Random r = new Random();
@@ -82,10 +106,11 @@ public class Simulation {
         int randomAltitude = r.nextInt(high-low) + low;
         Vehicle batmobile = new Vehicle(randomAltitude);
         Simulation newSim= new Simulation(batmobile);
+        OnBoardComputer jarvis= new OnBoardComputer();
         // create a new BurnInputStream
         BurnInputStream bernie= new BurnInputStream();
         // pass the new BurnInputStream to the runSimulation method
-        newSim.runSimulation(bernie);
+        newSim.runSimulation(jarvis);
     }
 
 }
