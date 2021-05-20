@@ -1,3 +1,14 @@
+#Execution of the Mars Lander excersize that was efficient enough to win a dragon.
+
+The real challenge in streamlining the code is to formulate the terminal velocity,
+i.e. the maximum speed the lander can go before it's unable to make a safe landing. 
+
+Once that is calculated, its only a matter of running the thrusters just enough to
+prevent crossing into terminal velocity and a couple more lines of logic to control 
+the landing the last 100 feet.
+
+
+---------------------------------------------------------------------------------------
 # Zip Mars Lander
 a simulation of the SpaceX Starship landing on Mars.
 
